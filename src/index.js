@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 
 
 const NoteApp = () => {
-  const [notes, setNotes] = useState([])
+  const notesData = JSON.parse(localStorage.getItem('notes'))
+  const [notes, setNotes] = useState(notesData || [])
   const [title, setTitle] = useState('')
   const [body, setBody] =useState('')
   const addNote = (e) => {
@@ -19,6 +20,11 @@ const NoteApp = () => {
   const removeNote = (title) => {
     setNotes(notes.filter((note) => note.title !== title))
   }
+
+  useEffect(()=> {
+    localStorage.setItem('notes',JSON.stringify(notes))
+  })
+
   return (
     <div>
       <h1>Notes</h1>
@@ -32,38 +38,41 @@ const NoteApp = () => {
         ))}
       <p>Add Note</p>
       <form onSubmit={addNote}>
-      <input value={title} onChange={(e)=> setTitle(e.target.value)}/>
-      <textarea value ={body} onChange={(e) => setBody(e.target.value)} />
-      <button>Add Note</button>
+        <input value={title} onChange={(e)=> setTitle(e.target.value)}/>
+        <textarea value ={body} onChange={(e) => setBody(e.target.value)} />
+        <button>Add Note</button>
       </form>
     </div>
   )
 }
 
+reportWebVitals();
 
 
+  //  const App = (props) => {
+  //   const [count, setCount] = useState(props.count)
+  //   const [text, setText] = useState('');
+
+  //   useEffect(()=> {
+  //    console.log('useEffect ran')
+  //    document.title = count
+  //   })
+
+  //   return (
+  //     <div>
+  //       <p>The current {text || 'count'} is {count}</p>
+  //       <button onClick={() => setCount(count + 1)}>Increase by 1</button>
+  //       <button onClick={() => setCount(props.count)}>Reset </button>
+  //       <button onClick={() => setCount(count - 1)}>Decrease by 1</button>
+  //       <input value={text} onChange={(e) => setText(e.target.value)} />
+  //     </div>
+  //   )
+  // }
 ReactDOM.render(
   <NoteApp />,
   document.getElementById('root')
 );
 
-
-reportWebVitals();
-
-
-/* const App = (props) => {
-  const [count, setCount] = useState(props.count)
-  const [text, setText] = useState('');
-  return (
-    <div>
-      <p>The current {text || 'count'} is {count}</p>
-      <button onClick={() => setCount(count + 1)}>Increase by 1</button>
-      <button onClick={() => setCount(props.count)}>Reset </button>
-      <button onClick={() => setCount(count - 1)}>Decrease by 1</button>
-      <input value={text} onChange={(e) => setText(e.target.value)} />
-    </div>
-  )
-} */
 
 // const NoteApp = () => {
 //   const [names, setNames] = useState([])
